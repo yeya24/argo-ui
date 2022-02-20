@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Observable, Subscription } from 'rxjs';
+// import { Observable, Subscription } from 'rxjs';
 
 const Terminal = require('xterm');
 Terminal.loadAddon('fit');

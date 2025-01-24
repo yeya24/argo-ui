@@ -1,4 +1,4 @@
-import * as classNames from 'classnames';
+import {default as classNames} from 'classnames';
 import * as React from 'react';
 import * as ReactForm from 'react-form';
 
@@ -18,7 +18,7 @@ export const AutocompleteField = ReactForm.FormField((props: AutocompleteProps &
             }}
             inputProps={{
                 className: props.className,
-                style: {borderBottom: 'none'},
+                style: {borderBottom: 'none', position: 'unset'},
             }}
             value={value}
             renderInput={(inputProps) => (

@@ -1,6 +1,7 @@
-import * as classNames from 'classnames';
+import {default as classNames} from 'classnames';
+import {CSSProperties, ReactNode} from 'react';
 import * as React from 'react';
-import * as ReactAutocomplete from 'react-autocomplete';
+import ReactAutocomplete from 'react-autocomplete';
 
 require('./autocomplete.scss');
 export interface AutocompleteApi {
@@ -24,6 +25,8 @@ export interface AutocompleteProps {
     autoCompleteRef?: (api: AutocompleteApi) => any;
     filterSuggestions?: boolean;
     qeid?: string;
+    /** @default true */ // per https://github.com/reactjs/react-autocomplete/blob/41388f7d7760bf6cf38e7946e43d4fddd9c7c176/lib/Autocomplete.js#L188
+    autoHighlight?: ReactAutocomplete.Props['autoHighlight'];
 }
 
 export const Autocomplete = (props: AutocompleteProps) => {
@@ -56,7 +59,7 @@ export const Autocomplete = (props: AutocompleteProps) => {
     wrapperProps.className = classNames('select', wrapperProps.className);
     return (
         <ReactAutocomplete
-            autoHighlight={true}
+            autoHighlight={props.autoHighlight}
             ref={(el: any) => {
                 if (el) {
                     if (el.refs.input) {
@@ -106,16 +109,16 @@ export const Autocomplete = (props: AutocompleteProps) => {
             shouldItemRender={(item: AutocompleteOption, val: string) => {
                 return !props.filterSuggestions || item.label.toLowerCase().includes(val.toLowerCase());
             }}
-            renderMenu={function(menuItems, _, style) {
+            renderMenu={function(menuItems: ReactNode[], _: string, style: CSSProperties) {
                 if (menuItems.length === 0) {
                     return <div style={{display: 'none'}} />;
                 }
-                return <div style={{...style, ...this.menuStyle, background: 'white', zIndex: 10, maxHeight: '20em'}} children={menuItems} />;
+                return <div style={{...style, ...this.menuStyle, background: 'white', zIndex: 20, maxHeight: '20em'}}>{menuItems}</div>;
             }}
-            getItemValue={(item) => item.label}
+            getItemValue={(item: any) => item.label}
             items={items}
             value={props.value}
-            renderItem={(item, isSelected) => (
+            renderItem={(item: any, isSelected: boolean) => (
                 <div className={classNames('select__option', {selected: isSelected})} key={item.label}>
                     {(props.renderItem && props.renderItem(item)) || item.label}
                 </div>
